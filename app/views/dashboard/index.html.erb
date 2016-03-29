@@ -11,10 +11,25 @@
   </div>
 </div>
 
-<div class="row">
-  <% @athletes.each do |athlete| %>
-  <div class="col-md-10 well member">
-    <%= athlete.full_name %>
-  </div>
-  <% end %>
-</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @athletes.each do |athlete| %>
+      <tr>
+        <td><%= athlete.full_name %></td>
+          <td>
+          <% if athlete != current_user and !current_user.friends_with athlete %>
+            <%= link_to 'Follow', friendships_path(friend_id: athlete), method: :post, class: 'btn btn-primary btn-xs' %>
+          <% elsif current_user.friends_with athlete %>
+            <%= link_to "Unfollow", friendship_path(athlete), method: :delete, class: 'btn btn-danger btn-xs' %>
+          <% end %>
+          </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
