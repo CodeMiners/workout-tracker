@@ -12,6 +12,9 @@ class ExercisesController < ApplicationController
   def new
     @exercise = current_user.exercises.new
   end
+  
+  def edit
+  end
 
   def create
     @exercise = current_user.exercises.new(exercise_params)
@@ -24,7 +27,17 @@ class ExercisesController < ApplicationController
       render :new
     end
   end
-
+  
+  def update
+    if @exercise.update(exercise_params)
+      flash[:success] = "Exercise has been updated"
+      redirect_to [current_user, @exercise]
+    else
+      flash[:danger] = "Exercise has not been updated"
+      render :edit
+    end
+  end
+  
   private
 
     def set_exercise
